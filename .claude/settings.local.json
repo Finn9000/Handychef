@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"C:\\\\Users\\\\DELL\\\\.config\\\\herd\\\\bin\\\\php84\\\\php.exe\" --version)",
+      "Bash(powershell -Command \"Get-Process -Id 5860 | Select-Object Id,Path,StartTime\")",
+      "PowerShell(Get-CimInstance Win32_Process -Filter \"ProcessId=5860\")",
+      "Bash('C:\\\\Users\\\\DELL\\\\.config\\\\herd\\\\bin\\\\php84\\\\php.exe' artisan *)",
+      "Bash(\"C:\\\\Users\\\\DELL\\\\.config\\\\herd\\\\bin\\\\php84\\\\php.exe\" artisan *)"
+    ]
+  }
+}

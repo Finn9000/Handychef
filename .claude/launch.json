@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "handychef",
+      "runtimeExecutable": "C:\\Users\\DELL\\.config\\herd\\bin\\php84\\php.exe",
+      "runtimeArgs": ["artisan", "serve", "--no-reload"],
+      "port": 8000
+    }
+  ]
+}

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'age', 'address'])]
+#[Fillable(['name', 'email', 'password', 'role', 'phone'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -22,7 +22,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public const ROLE_CUSTOMER = 'customer';
     public const ROLE_GHOST_KITCHEN = 'ghost_kitchen';
-    public const ROLE_ADMIN = 'admin';
 
     /**
      * Get the attributes that should be cast.
@@ -45,11 +44,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isGhostKitchen(): bool
     {
         return $this->role === self::ROLE_GHOST_KITCHEN;
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->role === self::ROLE_ADMIN;
     }
 
     /**

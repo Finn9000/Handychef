@@ -40,7 +40,7 @@ class RegisteredGhostKitchenController extends Controller
             'role' => User::ROLE_GHOST_KITCHEN,
         ]);
 
-        // Ghost kitchens skip email verification — their gate is admin approval instead.
+        // Ghost kitchens skip email verification.
         $user->forceFill(['email_verified_at' => now()])->save();
 
         $user->ghostKitchen()->create([
@@ -48,7 +48,6 @@ class RegisteredGhostKitchenController extends Controller
             'manager_name' => $request->manager_name,
             'address' => $request->address,
             'phone' => $request->phone,
-            'status' => 'pending',
         ]);
 
         Auth::login($user);

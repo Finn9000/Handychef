@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MealPreparedNotification extends Notification
+class MealCollectedNotification extends Notification
 {
     use Queueable;
 
@@ -25,12 +25,9 @@ class MealPreparedNotification extends Notification
         $subscription = $this->pickup->subscription;
 
         return (new MailMessage)
-            ->subject('A kitchen has meals ready to route')
-            ->line($subscription->mealPlan->ghostKitchen->business_name.' has finished preparing meals for '.$subscription->user->name.'.')
-            ->line('Meal plan: '.$subscription->mealPlan->name)
-            ->line('Requested pickup time: '.($subscription->pickup_time ?? 'Not specified'))
-            ->line('Requested pickup location: '.($subscription->pickup_location ?? 'Not specified'))
-            ->line('Once the food reaches that location, notify the customer from the admin Pickups page.');
+            ->subject('Pickup confirmed')
+            ->line('Your order for "'.$subscription->mealPlan->name.'" has been picked up.')
+            ->line('Thanks for using HandyChef!');
     }
 
     public function toArray(object $notifiable): array
@@ -39,8 +36,6 @@ class MealPreparedNotification extends Notification
 
         return [
             'pickup_id' => $this->pickup->id,
-            'kitchen_name' => $subscription->mealPlan->ghostKitchen->business_name,
-            'customer_name' => $subscription->user->name,
             'meal_plan_name' => $subscription->mealPlan->name,
         ];
     }

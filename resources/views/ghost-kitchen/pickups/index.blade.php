@@ -43,7 +43,6 @@
                                         @php
                                             $statusColors = [
                                                 'pending' => 'bg-yellow-100 text-yellow-800',
-                                                'prepared' => 'bg-blue-100 text-blue-800',
                                                 'ready' => 'bg-green-100 text-green-800',
                                                 'collected' => 'bg-gray-100 text-gray-800',
                                             ];
@@ -54,10 +53,17 @@
                                     </td>
                                     <td class="px-6 py-4 text-sm text-right">
                                         @if ($pickup->status === 'pending')
-                                            <form method="POST" action="{{ route('kitchen.pickups.prepared', $pickup) }}">
+                                            <form method="POST" action="{{ route('kitchen.pickups.ready', $pickup) }}">
                                                 @csrf
                                                 <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md text-xs font-semibold text-white uppercase tracking-wide bg-indigo-600 hover:bg-indigo-700">
-                                                    {{ __('Mark Prepared') }}
+                                                    {{ __('Mark Ready') }}
+                                                </button>
+                                            </form>
+                                        @elseif ($pickup->status === 'ready')
+                                            <form method="POST" action="{{ route('kitchen.pickups.collected', $pickup) }}">
+                                                @csrf
+                                                <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md text-xs font-semibold text-white uppercase tracking-wide bg-green-600 hover:bg-green-700">
+                                                    {{ __('Mark Collected') }}
                                                 </button>
                                             </form>
                                         @endif

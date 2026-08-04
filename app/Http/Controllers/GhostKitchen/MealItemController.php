@@ -23,7 +23,7 @@ class MealItemController extends Controller
     {
         $this->authorizeOwnership($mealPlan);
 
-        $mealItems = $mealPlan->mealItems()->latest()->get();
+        $mealItems = $mealPlan->mealItems()->with('ingredientOptions')->latest()->get();
 
         return view('ghost-kitchen.meal-plans.items', compact('mealPlan', 'mealItems'));
     }
@@ -36,7 +36,6 @@ class MealItemController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-            'price' => ['required', 'numeric', 'min:0'],
             'is_available' => ['nullable', 'boolean'],
         ]);
 
@@ -47,7 +46,6 @@ class MealItemController extends Controller
         unset($validated['image']);
 
         $mealPlan->mealItems()->create($validated);
-        $mealPlan->refreshPrice();
 
         return redirect()->route('kitchen.meal-plans.items.index', $mealPlan)->with('status', 'Meal item added.');
     }
@@ -61,7 +59,6 @@ class MealItemController extends Controller
         }
 
         $validated = $request->validate([
-            'price' => ['required', 'numeric', 'min:0'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
@@ -71,9 +68,8 @@ class MealItemController extends Controller
         unset($validated['image']);
 
         $mealItem->update($validated);
-        $mealPlan->refreshPrice();
 
-        return redirect()->route('kitchen.meal-plans.items.index', $mealPlan)->with('status', 'Meal price updated.');
+        return redirect()->route('kitchen.meal-plans.items.index', $mealPlan)->with('status', 'Meal item updated.');
     }
 
     public function destroy(MealPlan $mealPlan, \App\Models\MealItem $mealItem): RedirectResponse
@@ -85,7 +81,6 @@ class MealItemController extends Controller
         }
 
         $mealItem->delete();
-        $mealPlan->refreshPrice();
 
         return redirect()->route('kitchen.meal-plans.items.index', $mealPlan)->with('status', 'Meal item removed.');
     }

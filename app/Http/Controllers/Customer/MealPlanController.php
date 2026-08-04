@@ -26,7 +26,7 @@ class MealPlanController extends Controller
      */
     public function show(MealPlan $mealPlan): View
     {
-        $mealPlan->load('ghostKitchen', 'mealItems');
+        $mealPlan->load('ghostKitchen', 'mealItems.ingredientOptions');
 
         // A customer may subscribe to several different plans, but not to the
         // same plan more than once while that subscription remains active.

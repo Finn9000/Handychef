@@ -6,10 +6,23 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['ghost_kitchen_id', 'name', 'description', 'image_path', 'use_item_photos', 'price', 'meals_per_week', 'is_active'])]
+#[Fillable(['ghost_kitchen_id', 'name', 'description', 'image_path', 'use_item_photos', 'price', 'available_days', 'is_active'])]
 class MealPlan extends Model
 {
     use HasFactory;
+
+    /**
+     * Days of the week a kitchen can make this plan available on.
+     */
+    public const DAYS = [
+        'mon' => 'Monday',
+        'tue' => 'Tuesday',
+        'wed' => 'Wednesday',
+        'thu' => 'Thursday',
+        'fri' => 'Friday',
+        'sat' => 'Saturday',
+        'sun' => 'Sunday',
+    ];
 
     protected function casts(): array
     {
@@ -17,6 +30,7 @@ class MealPlan extends Model
             'price' => 'decimal:2',
             'is_active' => 'boolean',
             'use_item_photos' => 'boolean',
+            'available_days' => 'array',
         ];
     }
 
@@ -35,11 +49,20 @@ class MealPlan extends Model
         return $this->hasMany(Subscription::class);
     }
 
-    /** Keep the stored weekly plan price equal to its meal-item total. */
-    public function refreshPrice(): void
+    /** Human-readable label for the plan's available days, e.g. "Monday – Thursday". */
+    public function availableDaysLabel(): string
     {
-        $this->update([
-            'price' => $this->mealItems()->sum('price'),
-        ]);
+        $days = collect($this->available_days ?? [])
+            ->map(fn ($day) => self::DAYS[$day] ?? null)
+            ->filter()
+            ->values();
+
+        if ($days->isEmpty()) {
+            return 'Not specified';
+        }
+
+        return $days->count() > 1
+            ? $days->first().' – '.$days->last()
+            : $days->first();
     }
 }

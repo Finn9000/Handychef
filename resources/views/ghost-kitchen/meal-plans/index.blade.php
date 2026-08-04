@@ -31,7 +31,7 @@
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Meals/Week</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Available Days</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Items</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subscribers</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
@@ -43,7 +43,7 @@
                                 <tr>
                                     <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $plan->name }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-500">${{ number_format($plan->price, 2) }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-500">{{ $plan->meals_per_week }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">{{ $plan->availableDaysLabel() }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-500">{{ $plan->meal_items_count }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-500">{{ $plan->subscriptions_count }}</td>
                                     <td class="px-6 py-4 text-sm">

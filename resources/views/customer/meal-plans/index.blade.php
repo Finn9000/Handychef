@@ -26,7 +26,7 @@
                             <p class="text-sm text-gray-600 mt-3 flex-1">{{ Str::limit($plan->description, 100) }}</p>
                             <div class="mt-4 flex items-center justify-between">
                                 <span class="font-semibold text-gray-900">${{ number_format($plan->price, 2) }}/wk</span>
-                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700">{{ $plan->meals_per_week }} meals/wk</span>
+                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700">{{ $plan->availableDaysLabel() }}</span>
                             </div>
                             <a href="{{ route('customer.meal-plans.show', $plan) }}"
                                 class="mt-4 inline-flex justify-center items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">

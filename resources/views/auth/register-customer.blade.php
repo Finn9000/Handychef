@@ -9,13 +9,6 @@
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
-        <!-- Age -->
-        <div class="mt-4">
-            <x-input-label for="age" :value="__('Age')" />
-            <x-text-input id="age" class="block mt-1 w-full" type="number" min="1" max="120" name="age" :value="old('age')" required />
-            <x-input-error :messages="$errors->get('age')" class="mt-2" />
-        </div>
-
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
@@ -23,11 +16,11 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Home address -->
+        <!-- Phone -->
         <div class="mt-4">
-            <x-input-label for="address" :value="__('Home Address')" />
-            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" required />
-            <x-input-error :messages="$errors->get('address')" class="mt-2" />
+            <x-input-label for="phone" :value="__('Phone Number')" />
+            <x-text-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')" required autocomplete="tel" />
+            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>
 
         <!-- Password -->

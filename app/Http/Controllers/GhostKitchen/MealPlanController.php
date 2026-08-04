@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MealPlan;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class MealPlanController extends Controller
@@ -47,13 +48,14 @@ class MealPlanController extends Controller
             'description' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'use_item_photos' => ['nullable', 'boolean'],
-            'meals_per_week' => ['required', 'integer', 'min:1', 'max:21'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'available_days' => ['required', 'array', 'min:1'],
+            'available_days.*' => [Rule::in(array_keys(MealPlan::DAYS))],
             'is_active' => ['nullable', 'boolean'],
         ]);
 
         $validated['is_active'] = $request->boolean('is_active');
         $validated['use_item_photos'] = $request->boolean('use_item_photos');
-        $validated['price'] = 0;
         $validated['image_path'] = $request->hasFile('image')
             ? $request->file('image')->store('meal-plans', 'public')
             : null;
@@ -80,7 +82,9 @@ class MealPlanController extends Controller
             'description' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'use_item_photos' => ['nullable', 'boolean'],
-            'meals_per_week' => ['required', 'integer', 'min:1', 'max:21'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'available_days' => ['required', 'array', 'min:1'],
+            'available_days.*' => [Rule::in(array_keys(MealPlan::DAYS))],
             'is_active' => ['nullable', 'boolean'],
         ]);
 

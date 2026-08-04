@@ -9,7 +9,7 @@
 
         <a href="{{ route('register.kitchen') }}"
             class="block w-full text-center px-4 py-3 bg-gray-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-700">
-            {{ __('Sign up as Ghost Kitchen') }}
+            {{ __('Sign up as Kitchen') }}
         </a>
 
         <div class="flex items-center justify-center mt-4">

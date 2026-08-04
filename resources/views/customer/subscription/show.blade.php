@@ -20,12 +20,19 @@
                     @foreach ($unreadNotifications as $notification)
                         <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4 text-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                             <div>
-                                <p class="font-medium text-indigo-900">{{ __('Your meal is ready!') }}</p>
-                                <p class="text-indigo-700">
-                                    {{ $notification->data['meal_plan_name'] ?? 'Your meal' }} —
-                                    {{ $notification->data['pickup_time'] ?? 'Not specified' }} at
-                                    {{ $notification->data['pickup_location'] ?? 'Not specified' }}
-                                </p>
+                                @if ($notification->type === \App\Notifications\MealCollectedNotification::class)
+                                    <p class="font-medium text-indigo-900">{{ __('Pickup confirmed') }}</p>
+                                    <p class="text-indigo-700">
+                                        {{ $notification->data['meal_plan_name'] ?? 'Your order' }} — {{ __('picked up.') }}
+                                    </p>
+                                @else
+                                    <p class="font-medium text-indigo-900">{{ __('Your meal is ready!') }}</p>
+                                    <p class="text-indigo-700">
+                                        {{ $notification->data['meal_plan_name'] ?? 'Your meal' }} —
+                                        {{ $notification->data['pickup_time'] ?? 'Not specified' }} at
+                                        {{ $notification->data['pickup_location'] ?? 'Not specified' }}
+                                    </p>
+                                @endif
                             </div>
                             <form method="POST" action="{{ route('customer.notifications.dismiss', $notification->id) }}">
                                 @csrf
@@ -61,10 +68,26 @@
 
                     <div class="mt-4 border-t border-gray-200 pt-4">
                         <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">{{ __('Your chosen meals') }}</h4>
-                        <ul class="list-disc list-inside text-sm text-gray-700">
-                            @foreach ($subscription->subscriptionItems as $si)
-                                <li>{{ $si->mealItem->name }}</li>
-                            @endforeach
+                        @php
+                            $slotOrder = ['morning' => 0, 'afternoon' => 1, 'evening' => 2];
+                            $orderedItems = $subscription->subscriptionItems->sortBy(fn ($si) => $slotOrder[$si->slot] ?? 99);
+                        @endphp
+                        <ul class="text-sm text-gray-700 space-y-2">
+                            @forelse ($orderedItems as $si)
+                                <li>
+                                    <span class="font-medium text-gray-900">{{ ucfirst($si->slot ?? 'Meal') }}:</span>
+                                    {{ $si->mealItem->name }}
+                                    @if ($si->ingredientOptions->isNotEmpty())
+                                        <ul class="list-disc list-inside text-xs text-gray-500 ms-4">
+                                            @foreach ($si->ingredientOptions as $option)
+                                                <li>{{ $option->type === 'add' ? 'Add' : 'Remove' }} {{ $option->name }}</li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </li>
+                            @empty
+                                <li class="text-gray-500">{{ __('No meals selected.') }}</li>
+                            @endforelse
                         </ul>
                     </div>
 
@@ -74,7 +97,6 @@
                             @php
                                 $statusColors = [
                                     'pending' => 'bg-yellow-100 text-yellow-800',
-                                    'prepared' => 'bg-blue-100 text-blue-800',
                                     'ready' => 'bg-green-100 text-green-800',
                                     'collected' => 'bg-gray-100 text-gray-800',
                                 ];

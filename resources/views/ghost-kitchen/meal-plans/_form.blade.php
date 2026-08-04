@@ -34,18 +34,28 @@
     <p class="mt-1 text-xs text-gray-500">If enabled, a grid of your meal items' own photos is shown instead of the image above once you've added items with photos.</p>
 </div>
 
-<div class="mt-4 grid grid-cols-2 gap-4">
-    <div>
-        <x-input-label value="Plan Price" />
-        <p class="mt-1 text-sm text-gray-500">Calculated automatically from the prices of its meal items.</p>
-    </div>
+<div class="mt-4">
+    <x-input-label for="price" value="Plan Price (USD / week)" />
+    <x-text-input id="price" name="price" type="number" step="0.01" min="0" class="block mt-1 w-full"
+        :value="old('price', $mealPlan?->price ?? '')" required />
+    <x-input-error :messages="$errors->get('price')" class="mt-2" />
+</div>
 
-    <div>
-        <x-input-label for="meals_per_week" value="Meals per Week" />
-        <x-text-input id="meals_per_week" name="meals_per_week" type="number" min="1" max="21" class="block mt-1 w-full"
-            :value="old('meals_per_week', $mealPlan?->meals_per_week ?? 5)" required />
-        <x-input-error :messages="$errors->get('meals_per_week')" class="mt-2" />
+<div class="mt-4">
+    <x-input-label value="Available Days" />
+    <p class="mt-1 text-xs text-gray-500">Which days of the week this plan runs, e.g. Monday–Thursday.</p>
+    <div class="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-2">
+        @php $selectedDays = old('available_days', $mealPlan?->available_days ?? []); @endphp
+        @foreach (\App\Models\MealPlan::DAYS as $key => $label)
+            <label class="flex items-center">
+                <input type="checkbox" name="available_days[]" value="{{ $key }}"
+                    class="rounded text-indigo-600 focus:ring-indigo-500"
+                    {{ in_array($key, $selectedDays) ? 'checked' : '' }}>
+                <span class="ms-2 text-sm text-gray-700">{{ $label }}</span>
+            </label>
+        @endforeach
     </div>
+    <x-input-error :messages="$errors->get('available_days')" class="mt-2" />
 </div>
 
 <div class="mt-4">

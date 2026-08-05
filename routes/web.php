@@ -23,7 +23,7 @@ Route::get('/dashboard', function () {
         User::ROLE_GHOST_KITCHEN => redirect()->route('kitchen.dashboard'),
         default => redirect()->route('customer.dashboard'),
     };
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

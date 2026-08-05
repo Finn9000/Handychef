@@ -17,6 +17,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Password Reset Code
+    |--------------------------------------------------------------------------
+    |
+    | A shared code required to reset any account's password. Stands in for
+    | an emailed confirmation link, which this app's mail provider can't
+    | reliably deliver to arbitrary recipients. Anyone who knows this code
+    | can reset any account's password by email alone — keep it private,
+    | share it only with people you trust to demo/use the app.
+    |
+    */
+
+    'password_reset_code' => env('PASSWORD_RESET_CODE', 'HandyChef2026'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
